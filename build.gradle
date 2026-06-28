@@ -114,7 +114,7 @@ tasks.register('fetchRobolectricDependencies', Copy) {
 
 tasks.named("dependencyUpdates").configure {
     rejectVersionIf {
-        def unstableKeywords = ['alpha', 'beta', 'rc', 'cr', 'm', 'eap', 'preview', 'pr']
+        def unstableKeywords = ['alpha', 'beta', 'rc', 'cr', 'm', 'eap', 'preview', 'pr', 'snapshot']
         def version = it.candidate.version.toLowerCase()
         unstableKeywords.any { keyword -> version =~ /(?i)[.-]${keyword}[.\d-]*$/ }
     }
