@@ -1,0 +1,73 @@
+version: 2
+
+updates:
+
+  # ╔══════════════════════════════════════════════════════════╗
+  # ║  GRADLE — root project (Mon)                            ║
+  # ║  Dependabot reads gradle/libs.versions.toml directly,    ║
+  # ║  so one root entry covers app/, file_operations,         ║
+  # ║  portscanner, commons_compress_7z, testShared.           ║
+  # ╚══════════════════════════════════════════════════════════╝
+
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels: ["dependencies", "gradle"]
+    commit-message:
+      prefix: "chore(deps)"
+    ignore:
+      # KSP's version string is hand-pinned in build.gradle to match the Kotlin
+      # version in libs.versions.toml exactly (e.g. 2.2.21-2.0.5). Bumping it on
+      # its own without bumping kotlin in lockstep will break the build, so this
+      # one stays manual.
+      - dependency-name: "com.google.devtools.ksp"
+      - dependency-name: "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin"
+    groups:
+      gradle-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ╔══════════════════════════════════════════════════════════╗
+  # ║  CARGO — file_operations (Tue)                           ║
+  # ╚══════════════════════════════════════════════════════════╝
+
+  - package-ecosystem: "cargo"
+    directory: "/file_operations"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    labels: ["dependencies", "rust"]
+    commit-message:
+      prefix: "chore(deps/rust)"
+    groups:
+      cargo-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
+
+  # ╔══════════════════════════════════════════════════════════╗
+  # ║  GITHUB ACTIONS (Wed)                                    ║
+  # ╚══════════════════════════════════════════════════════════╝
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "09:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 10
+    labels: ["ci", "actions"]
+    commit-message:
+      prefix: "chore(ci)"
+    groups:
+      actions-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
