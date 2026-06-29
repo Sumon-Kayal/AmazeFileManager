@@ -46,18 +46,18 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Set up JDK 17
         if: matrix.language == 'java-kotlin'
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: "temurin"
           java-version: 17
 
       - name: Set up NDK
         if: matrix.language == 'java-kotlin'
-        uses: nttld/setup-ndk@v1
+        uses: nttld/setup-ndk@6a7e9c5494b25a37d1c4d2f13ddd0c44569ece22 # v1.5.0
         with:
           ndk-version: r28c
           link-to-sdk: true
@@ -65,13 +65,13 @@ jobs:
 
       - name: Install Rust
         if: matrix.language == 'java-kotlin'
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # stable
         with:
           toolchain: stable
 
       - name: Cache Rust dependencies
         if: matrix.language == 'java-kotlin'
-        uses: actions/cache@v5
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: |
             ~/.cargo/bin/
@@ -92,10 +92,10 @@ jobs:
 
       - name: Setup Gradle
         if: matrix.language == 'java-kotlin'
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v4
+        uses: github/codeql-action/init@ce28f5bb42b49b1da6f9e5ad90ce8b96d8c1b5cd # v3.29.0
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
@@ -106,6 +106,6 @@ jobs:
         run: ./gradlew assembledebug --stacktrace
 
       - name: Perform CodeQL analysis
-        uses: github/codeql-action/analyze@v4
+        uses: github/codeql-action/analyze@ce28f5bb42b49b1da6f9e5ad90ce8b96d8c1b5cd # v3.29.0
         with:
           category: "/language:${{ matrix.language }}"
