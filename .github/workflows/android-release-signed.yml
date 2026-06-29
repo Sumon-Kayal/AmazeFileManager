@@ -23,31 +23,38 @@ jobs:
     name: Build & sign F-Droid release APK
     runs-on: ubuntu-latest
     steps:
+      - name: Validate ref input
+        if: github.event_name == 'workflow_dispatch' && inputs.ref != ''
+        run: |
+          if ! echo "${{ inputs.ref }}" | grep -qE '^v[0-9]+\.[0-9]+'; then
+            echo "::error::Invalid ref '${{ inputs.ref }}'. Only version tags (starting with 'v' followed by version numbers) are allowed for manual dispatch."
+            exit 1
+          fi
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && inputs.ref || github.ref }}
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@c5195efecf7bdfc987ee8bae7a71cb8b11521c00 # v4.7.1
         with:
           distribution: "temurin"
           java-version: 17
 
       - name: Set up NDK
-        uses: nttld/setup-ndk@v1
+        uses: nttld/setup-ndk@6a7e9c5494b25a37d1c4d2f13ddd0c44569ece22 # v1.5.0
         with:
           ndk-version: r28c
           link-to-sdk: true
           local-cache: true
 
       - name: Install Rust
-        uses: dtolnay/rust-toolchain@stable
+        uses: dtolnay/rust-toolchain@b3b07ba8b418998c39fb20f53e8b695cdcc8de1b # stable
         with:
           toolchain: stable
 
       - name: Cache Rust dependencies
-        uses: actions/cache@v5
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
         with:
           path: |
             ~/.cargo/bin/
@@ -66,7 +73,7 @@ jobs:
           ./setup_rust_android.sh
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v6
+        uses: gradle/actions/setup-gradle@ac638b010cf58a27ee6c972d7336334ccaf61c96 # v4.4.1
 
       - name: Decode signing keystore
         env:
@@ -99,14 +106,14 @@ jobs:
         run: rm -f "$RUNNER_TEMP/release.jks" signing.properties
 
       - name: Upload signed APK
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Amaze-Fdroid-release-signed
           path: app/build/outputs/apk/fdroid/release/app-fdroid-release.apk
           if-no-files-found: error
 
       - name: Upload R8/ProGuard mapping
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: Amaze-Fdroid-release-mapping
           path: app/build/outputs/mapping/fdroidRelease/mapping.txt
