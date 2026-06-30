@@ -132,6 +132,11 @@ class DragAndDropDialog : DialogFragment() {
         operationFiles = arguments?.getParcelableArrayList(KEY_FILES)
     }
 
+    /**
+     * Creates the drag-and-drop operation choice dialog.
+     *
+     * @return The configured dialog, or the base dialog when the dialog cannot be created.
+     */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         safeLet(
             context,
