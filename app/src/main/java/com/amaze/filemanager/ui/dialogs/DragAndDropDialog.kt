@@ -37,6 +37,7 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
 import com.amaze.filemanager.utils.safeLet
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.Locale
 
 class DragAndDropDialog : DialogFragment() {
     var pasteLocation: String? = null
@@ -151,7 +152,7 @@ class DragAndDropDialog : DialogFragment() {
                     .title(getString(R.string.choose_operation))
                     .customView(R.layout.dialog_drag_drop, true)
                     .theme(dialogTheme)
-                    .negativeText(getString(R.string.cancel).uppercase())
+                    .negativeText(getString(R.string.cancel).uppercase(Locale.getDefault()))
                     .negativeColor(accent)
                     .cancelable(false)
                     .onNeutral { _: MaterialDialog?, _: DialogAction? ->
