@@ -101,7 +101,6 @@ jobs:
             echo "::error::Missing signing secret values: ${missing[*]}"
             exit 1
           fi
-      
           cat > signing.properties <<PROPS
           STORE_FILE=$RUNNER_TEMP/release.jks
           STORE_PASSWORD=$STORE_PASSWORD
