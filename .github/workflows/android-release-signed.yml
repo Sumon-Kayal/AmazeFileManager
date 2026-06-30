@@ -91,6 +91,17 @@ jobs:
           KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
         run: |
+          missing=()
+          for name in STORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
+            if [ -z "${!name}" ]; then
+              missing+=("$name")
+            fi
+          done
+          if [ "${`#missing`[@]}" -ne 0 ]; then
+            echo "::error::Missing signing secret values: ${missing[*]}"
+            exit 1
+          fi
+      
           cat > signing.properties <<PROPS
           STORE_FILE=$RUNNER_TEMP/release.jks
           STORE_PASSWORD=$STORE_PASSWORD
