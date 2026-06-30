@@ -37,6 +37,7 @@ import com.amaze.filemanager.ui.fragments.preferencefragments.PreferencesConstan
 import com.amaze.filemanager.utils.safeLet
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.Locale
 
 class DragAndDropDialog : DialogFragment() {
     var pasteLocation: String? = null
@@ -132,6 +133,11 @@ class DragAndDropDialog : DialogFragment() {
         operationFiles = arguments?.getParcelableArrayList(KEY_FILES)
     }
 
+    /**
+     * Creates the drag-and-drop operation choice dialog.
+     *
+     * @return The configured dialog, or the base dialog when the dialog cannot be created.
+     */
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         safeLet(
             context,
@@ -146,7 +152,7 @@ class DragAndDropDialog : DialogFragment() {
                     .title(getString(R.string.choose_operation))
                     .customView(R.layout.dialog_drag_drop, true)
                     .theme(dialogTheme)
-                    .negativeText(getString(R.string.cancel).toUpperCase())
+                    .negativeText(getString(R.string.cancel).uppercase(Locale.getDefault()))
                     .negativeColor(accent)
                     .cancelable(false)
                     .onNeutral { _: MaterialDialog?, _: DialogAction? ->

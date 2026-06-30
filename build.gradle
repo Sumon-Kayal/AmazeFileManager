@@ -19,7 +19,8 @@ buildscript {
 
 plugins {
     id "com.diffplug.spotless" version "6.25.0"
-    id "com.google.devtools.ksp" version "1.9.25-1.0.20" apply false
+    id "com.google.devtools.ksp" version "2.2.21-2.0.5" apply false
+    id "com.github.ben-manes.versions" version "0.54.0"
 }
 
 allprojects {
@@ -109,6 +110,14 @@ tasks.register('fetchRobolectricDependencies', Copy) {
     from configurations.robo33
     from configurations.robo34
     into robolectricDependencies
+}
+
+tasks.named("dependencyUpdates").configure {
+    rejectVersionIf {
+        def unstableKeywords = ['alpha', 'beta', 'rc', 'cr', 'm', 'eap', 'preview', 'pr', 'snapshot']
+        def version = it.candidate.version.toLowerCase()
+        unstableKeywords.any { keyword -> version =~ /(?i)[.-]${keyword}[.\d-]*$/ }
+    }
 }
 
 subprojects {
